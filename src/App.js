@@ -7,12 +7,14 @@ import { SneakersPage } from './pages/sneakerspage/sneakerspage-component';
 import { MenPage } from './pages/menpage/menpage-component';
 import { WomenPage } from './pages/womenpage/womenpage-component';
 import { ShopPage } from './pages/shoppage/shop-component';
+import { Header } from './components/header/header-component';
 
 import './App.css';
 
 function App() {
   return (
     <div>
+      <Header />
       <Switch>
         <Route exact path='/' component={Homepage} />
         <Route exact path='/shop' component={ShopPage} />
