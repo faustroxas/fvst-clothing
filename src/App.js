@@ -9,7 +9,7 @@ import { WomenPage } from './pages/womenpage/womenpage-component';
 import { ShopPage } from './pages/shoppage/shop-component';
 import { Header } from './components/header/header-component';
 import { SignInAndSignUpPage } from './pages/signin-signup/signin-signup-component';
-import { auth } from './firebase/firebase-utils';
+import { auth, createUserProfileDocument } from './firebase/firebase-utils';
 
 import './App.css';
 
@@ -25,8 +25,21 @@ class App extends React.Component {
   unsubscribeFromAuth = null
 
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      this.setState({ currentUser: user })
+    // Sign In method
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async user => {
+      if (user){
+        const userRef = await createUserProfileDocument(user);
+
+        userRef.onSnapshot(snapShot => {
+          this.setState({currentUser: {
+            id: snapShot.id,
+            ...snapShot.data()
+            }
+          }, () => console.log(this.state.currentUser))
+        })
+      }
+
+      this.setState({ currentUser: null });
     });
   }
 
